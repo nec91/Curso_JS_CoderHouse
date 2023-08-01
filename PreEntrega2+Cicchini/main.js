@@ -21,7 +21,7 @@ const user7 = new User("sandra77", "qwerty26", "Sandra", "Krivich", 52, "female"
 
 let userDB = [user1, user2, user3, user4, user5, user6, user7]
 
-let userLogged = []
+let userLoggedId = []
 
 function addUser() {
     let user = prompt("Ingrese un nombre de usuario").toLocaleLowerCase().trim()
@@ -52,7 +52,6 @@ function addUser() {
 function logIn() {
     let userLog = prompt("Bienvenido, ingrese su usuario.").toLocaleLowerCase().trim()
     const logResult = userDB.find(i => i.user === userLog)
-    console.log(logResult)
 
     if (logResult === undefined) {
         console.log("Usuario incorrecto, intente nuevamente.")
@@ -66,23 +65,51 @@ function logIn() {
         return
     } else {
         console.log(`Bienvenid@ ${logResult.name} ${logResult.lastName}  `)
-        return userLogged.push(logResult.id)
+        userLoggedId = []
+        return userLoggedId.push(logResult.id)
     }
 }
 
 
-
-function calculator() {
-    let user = userDB[userLogged - 1]
-    console.log(user)
+function male() {
+    let user = userDB[userLoggedId - 1]
     let aportes = parseInt(prompt("¿Cuantos años de aportes tiene?"))
     if (isNaN(aportes)) {
         console.log("Ingrese un dato válido")
-    } else if (user.gender === "m" && user.age < 65){
+    } else if (user.age < 65) {
         let restaEdad = 65 - user.age
-        alert(`Aun te faltan ${restaEdad} años para poder jubilarte`)}
+        console.log(`Requisitos de jubilación insuficioentes. La edad mínima necesaria es de 65 años. Restan: ${restaEdad} año/s.`)
+    } else if (aportes < 30) {
+        let restaAportes = 30 - aportes
+        console.log((`Requisitos de jubilación insuficioentes. Año/s restante/s de aportes: ${restaAportes}`))
+    } else {
+        return console.log(`Felicidades ${user.name} ${user.lastName}, cumple todos los requisitos para jubilarse.`)
+    }
+}
 
+function female() {
+    let user = userDB[userLoggedId - 1]
+    let aportes = parseInt(prompt("¿Cuantos años de aportes tiene?"))
+    if (isNaN(aportes)) {
+        console.log("Ingrese un dato válido")
+    } else if (user.age < 60) {
+        let restaEdad = 60 - user.age
+        console.log(`Requisitos de jubilación insuficioentes. La edad mínima necesaria es de 60 años. Restan: ${restaEdad} año/s.`)
+    } else if (aportes < 30) {
+        let restaAportes = 30 - aportes
+        console.log((`Requisitos de jubilación insuficioentes. Año/s restante/s de aportes: ${restaAportes}`))
+    } else {
+        return console.log(`Felicidades ${user.name} ${user.lastName}, cumple todos los requisitos para jubilarse.`)
+    }
 }
 
 
+function calculator() {
+    let user = userDB[userLoggedId - 1]
+    if (user.gender == "male") {
+        male()
+    } else {
+        female()
+    }
+}
 
