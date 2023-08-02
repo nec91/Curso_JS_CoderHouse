@@ -122,6 +122,7 @@ function calculator() {
     }
 }
 
+//funcion para iniciar el programa
 function start() {
     let welcome = confirm(`¡Bienvenido! ¿Usted se encuentra registrado? Responda "Aceptar" por si, o "Cancelar" por no. `)
     console.log(welcome)
