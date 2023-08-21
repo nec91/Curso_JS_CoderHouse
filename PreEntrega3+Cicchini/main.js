@@ -28,54 +28,99 @@ let userDB = [user1, user2, user3, user4, user5, user6, user7]
 let userLoggedId = []
 
 //funcion para agregar un usuario
-function addUser() {
-    let user = prompt("Ingrese un nombre de usuario").toLocaleLowerCase().trim()
-    if (userDB.some((i) => i.user === user)) {
-        return console.log("El nombre de usuario ya existe, por favor intente nuevamente.")
 
-    }
-    let password = prompt("Ingrese una contraseña")
-    let name = prompt("Ingrese su nombre").trim()
-    let lastName = prompt("Ingrese su apellido").trim()
-    let age = parseInt(prompt("Ingrese su edad"))
-    if (user === "" || password === "" || name === "" || lastName === "" || isNaN(age)) {
-        return console.log("Ingrese un valor correcto.")
+document.addEventListener("DOMContentLoaded", function () {
+    const addForm = document.getElementById("addForm")
+    const addSubmit = document.getElementById("addSubmit")
 
-    }
-    let gender = prompt(`Ingrese "H" si es hombre, o "M"si es mujer`).toLowerCase().trim()
-    if (gender === "h" || gender === "m") {
+    addSubmit.addEventListener("click", function (e) {
+        e.preventDefault()
+        const user = document.getElementById('user').value.toLocaleLowerCase().trim()
+        const password = document.getElementById('password1').value
+        const password2 = document.getElementById('password2').value
+        const name = document.getElementById('name').value.trim()
+        const lastName = document.getElementById('lastName').value.trim()
+        const age = parseInt(document.getElementById('age').value)
+        const genderSelect = document.getElementById('gender')
+        const gender = genderSelect.value === "m" ? "male" : "female"
+
+        const userExists = userDB.some((i) => i.user === user)
+        const userError = userExists ? "El nombre de usuario ya existe, por favor intente nuevamente." : ""
+
+        const emptyFields = user === "" || password === "" || password2 === "" || name === "" || lastName === "" || isNaN(age)
+        const emptyFieldsError = emptyFields ? "Ingrese un valor correcto en todos los campos." : ""
+
+        const passwordsMatch = password === password2
+        const passwordMatchError = passwordsMatch ? "" : "Las contraseñas no coinciden. Por favor, intente nuevamente."
+
+        if (userError || emptyFieldsError || passwordMatchError) {
+            console.log(userError || emptyFieldsError || passwordMatchError)
+            return
+        }
+
+        let id = userDB.length + 1
+        let newUser = new User(user, password, name, lastName, age, gender, id)
+        userDB.push(newUser)
+
         console.log("Usuario creado correctamente.")
-    } else {
-        console.log("ingrese un valor correcto.")
-    }
+        // window.location.href = "url_del_nuevo_formulario.html" // Cambia esto por la URL correcta
 
-    let id = userDB.length + 1
-    let newUser = new User(user, password, name, lastName, age, gender, id)
-    userDB.push(newUser)
-}
+
+    })
+
+})
+
+
 
 
 //funcion para loggearse
-function logIn() {
-    let userLog = prompt("Bienvenido, ingrese su usuario.").toLocaleLowerCase().trim()
-    const logResult = userDB.find(i => i.user === userLog)
 
-    if (logResult === undefined) {
-        console.log("Usuario incorrecto, intente nuevamente.")
-        return
-    } else {
-        console.log("check")
-    }
-    let passLog = prompt("Ingrese su contraseña")
-    if (logResult.password != passLog) {
-        console.log("Contraseña incorrecta.")
-        return
-    } else {
-        console.log(`Bienvenid@ ${logResult.name} ${logResult.lastName}  `)
-        userLoggedId = []
-        return userLoggedId.push(logResult.id)
-    }
-}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("loginForm")
+    const loginSubmit = document.getElementById("loginSubmit")
+
+    loginSubmit.addEventListener("click", function () {
+        const username = document.getElementById("username").value.trim().toLowerCase()
+        const password = document.getElementById("password").value
+        const logResult = userDB.find(i => i.user === username)
+
+        const userError = logResult ? "" : "Usuario incorrecto, intente nuevamente."
+        const passError = logResult && logResult.password !== password ? "Contraseña incorrecta." : ""
+
+        if (userError || passError) {
+            console.log(userError || passError)
+        } else {
+            console.log(`Bienvenid@ ${logResult.name} ${logResult.lastName}`)
+            userLoggedId.push(logResult.id)
+
+            sessionStorage.setItem("userLoggedId", JSON.stringify(userLoggedId))
+        }
+        window.location.href = "url_del_nuevo_formulario.html" // Cambia esto por la URL correcta
+    })
+})
+
+
+// function logIn() {
+//     let userLog = prompt("Bienvenido, ingrese su usuario.").toLocaleLowerCase().trim()
+//     const logResult = userDB.find(i => i.user === userLog)
+
+//     if (logResult === undefined) {
+//         console.log("Usuario incorrecto, intente nuevamente.")
+//         return
+//     } else {
+//         console.log("check")
+//     }
+//     let passLog = prompt("Ingrese su contraseña")
+//     if (logResult.password != passLog) {
+//         console.log("Contraseña incorrecta.")
+//         return
+//     } else {
+//         console.log(`Bienvenid@ ${logResult.name} ${logResult.lastName}  `)
+//         userLoggedId = []
+//         return userLoggedId.push(logResult.id)
+//     }
+// }
 
 //funcion calculo para genero masculino
 function male() {
